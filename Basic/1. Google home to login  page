@@ -1,0 +1,108 @@
+// Day 1  Google home page to login page
+package testing;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class Sample {
+
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("Webdriver.chrome.driver","D:\\My files\\Yellow matics\\testing file");
+		WebDriver d = new ChromeDriver();
+		d.get("https://www.google.com/");
+		System.out.println(d.getTitle());
+		System.out.println(d.getCurrentUrl());
+		d.manage().window().maximize();
+		d.findElement(By.className("gb_Z")).click();
+		Thread.sleep(2000);
+		d.findElement(By.cssSelector(".button.button--medium.header__aside__button.button--desktop.button--tablet.button--mobile")).click();
+		Thread.sleep(2000);
+		d.close();
+		d.quit();
+	}
+}
+
+// Report of issues faced 
+
+Selenium Automation – Issue Report
+Project: Selenium WebDriver with Chrome
+Browser: Chrome 143
+Operating System: Windows 11
+Language: Java
+
+
+1. CDP Version Mismatch Error
+Error:
+Unable to find CDP implementation matching 143
+
+Reason:
+Chrome was updated to version 143, but the Selenium version in use did not contain the matching Chrome DevTools Protocol (CDP) library.
+The project was also using selenium-server.jar, which is meant only for Selenium Grid and remote execution, not for local test execution.
+Solution:
+	1. Removed selenium-server.jar from the project.
+	2. Downloaded selenium-java-4.39.0.zip from the Selenium website.
+	3. Added selenium-java-4.39.0.jar and all jar files from the libs folder to the project.
+	4. Updated ChromeDriver to version 143.
+This added selenium-devtools-v143.jar to the project, which resolved the warning.
+
+
+2. driver.close() Not Working
+Issue:
+The driver.close() method was not closing the browser, but driver.quit() was working.
+Reason:
+Because selenium-server.jar was being used, Chrome was started as a remote session instead of a local browser session. This caused Selenium to lose the active window reference.
+Solution:
+After removing selenium-server.jar and using selenium-java with its libraries, Chrome started as a normal local browser. This fixed the window handling and driver.close() began working correctly.
+
+
+3. InvalidSelectorException (Multiple Class Names)
+Error:
+InvalidSelectorException: Compound class names not permitted
+
+Reason:
+By.className() can accept only one class name. The HTML element had multiple classes separated by spaces, which caused Selenium to treat it as an invalid selector.
+Example of wrong usage:
+By.className("button button--medium header__aside__button")
+
+Solution:
+Used CSS selectors or a single unique class instead.
+Correct examples:
+By.cssSelector(".header__aside__button")
+
+or
+By.cssSelector(".button.button--medium.header__aside__button")
+
+
+
+4. Google Login Blocked
+Error shown by Google:
+This browser or app may not be secure
+
+Reason:
+Google blocks all automated login attempts. When Selenium controls Chrome, Google detects automation and blocks the login to protect the account.
+Solution:
+Instead of automating the login page, Selenium was configured to use a real Chrome profile that is already logged in.
+Steps:
+	1. Logged in to Gmail using normal Chrome.
+	2. Found Chrome profile path from chrome://version.
+	3. Passed that profile to Selenium using ChromeOptions.
+This allowed Gmail to open already logged in without being blocked.
+
+
+5. ChromeDriver Version Mismatch
+Issue:
+Chrome updated to version 143, but ChromeDriver was an older version.
+Reason:
+ChromeDriver must match the major Chrome version to work correctly.
+Solution:
+Downloaded and installed ChromeDriver version 143.0.7499.192, which is compatible with Chrome 143.
+
+
+Final Best Practices
+	1. Never use selenium-server.jar for running local Selenium tests. Always use selenium-java.jar and all jars from the libs folder.
+	2. Chrome, ChromeDriver, and Selenium versions must match to avoid CDP errors.
+	3. By.className() must never contain spaces. Use By.cssSelector() or By.xpath() for elements with multiple classes.
+	4. Do not automate Google login pages. Use an already logged-in Chrome profile.
+	5. Update ChromeDriver whenever Chrome updates.
+
+
+This setup is now stable, compatible with Chrome 143, and working correctly.
