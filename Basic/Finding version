@@ -1,0 +1,21 @@
+package testing;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.BuildInfo;
+public class Sample {
+
+	public static void main(String[] args) throws InterruptedException  {
+        ChromeDriver driver = new ChromeDriver();
+        System.out.println(driver.getCapabilities().getBrowserVersion());
+        driver.quit();
+        //------------------------------------
+        BuildInfo info = new BuildInfo();
+        System.out.println("Selenium version: " + info.getReleaseLabel());
+        
+	}
+}
+
+
+/* output
+145.0.7632.117
+Selenium version: 4.40.0
+*/
