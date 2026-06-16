@@ -1,0 +1,31 @@
+package com.ananth.selenium.javascriptexecutor;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class JsExecutor {
+
+	public static void main(String[] args) throws InterruptedException {
+		WebDriver d = new ChromeDriver();
+		d.get("https://demoqa.com/");
+		JavascriptExecutor js = (JavascriptExecutor)d;
+		WebElement fclick = d.findElement(By.xpath("//h5[text()='Forms']"));
+		js.executeScript("arguments[0].click()",fclick);
+		Thread.sleep(4000);
+		WebElement pclick = d.findElement(By.xpath("//span[text()='Practice Form']"));
+		js.executeScript("arguments[0].click()",pclick);
+		Thread.sleep(2000);
+		WebElement mail = d.findElement(By.xpath("//input[@placeholder='name@example.com']"));
+		js.executeScript("arguments[0].value='abc@yahoo.com'",mail);
+		WebElement submit = d.findElement(By.xpath("//button[@id ='submit']"));
+//		js.executeScript("arguments[0].scrollIntoView(true)",submit);
+		js.executeScript("arguments[0].scrollIntoView({block:'center'})",submit);
+		Thread.sleep(3000);
+		js.executeScript("window.scrollBy(0,-300)");
+		Thread.sleep(3000);
+		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+		js.executeScript("location.reload()");
+	}
+
+}
