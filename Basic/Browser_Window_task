@@ -1,0 +1,33 @@
+package com.ananth.selenium.browser_windows;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebElement;
+public class Browser_windows {
+
+	public static void main(String[] args) {
+		WebDriver d = new ChromeDriver();
+		d.get("https://demoqa.com/browser-windows");
+		d.manage().window().maximize();
+		String url = "https://demoqa.com/browser-windows";
+		if(url.equals(d.getCurrentUrl())) { 
+			System.out.println("URL Verified");
+			String title = "demosite";
+			if(title.equals(d.getTitle())) { 
+				System.out.println("Title Verfied");
+				System.out.println("Title Length: "+title.length());
+				System.out.println("Page source: "+d.getPageSource());
+				System.out.println("Page source Length: "+d.getPageSource().length());
+				WebElement click_newTab = d.findElement(By.id("tabButton"));
+				click_newTab.click();
+				d.close();
+				d.quit();
+			}else { 
+				System.out.println("Wrong Title name");
+			}
+		}else { 
+			System.out.println("Wrong URL");
+		}
+	}
+
+}
